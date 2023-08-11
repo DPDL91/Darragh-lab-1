@@ -1,19 +1,34 @@
-// commemt on why error occured!!
+// error occured because there was no way to read the position of the button.
+//Had to add a flag and then the interrupt to be able to reset the flag and to get the code to work 
 
 #include "mbed.h"
 
 // main() runs in its own thread in the OS
 InterruptIn bttn(PC_13);
 
-void bttn_interrupt(){
-    printf("Buttn presses \r\n");
+bool buttonFlag = false; 
+
+void bttn_irq_handler()
+{
+    buttonFlag = true; 
+
+    //we want to set the flag when the button is pushed
+
 }
 
 
 int main()
 {
-    bttn.fall(&bttn_interrupt);
-    while (true) {
+    bttn.rise(&bttn_irq_handler);
+
+    //interupt handler fucntion
+
+    while (1) {
+        if (buttonFlag){
+            printf("button pressed\n");
+            buttonFlag = false; 
+
+            //resets flag 
 
     }
 }
